@@ -37,3 +37,18 @@ require "nvchad.autocmds"
 vim.schedule(function()
   require "mappings"
 end)
+vim.opt.relativenumber = true
+
+-- remember last position
+if vim.fn.has("autocmd") == 1 then
+  vim.api.nvim_create_autocmd("BufReadPost", {
+    callback = function()
+      local last_position = vim.api.nvim_buf_get_mark(0, '"')
+      local last_line = vim.api.nvim_buf_line_count(0)
+      if last_position[1] > 1 and last_position[1] <= last_line then
+        vim.api.nvim_feedkeys("g`\"", "n", false)
+      end
+    end
+  })
+end
+
